@@ -6,7 +6,8 @@
       :cljs [garden.types :as types :refer [CSSFunction CSSUnit]])
    [garden.color :as color]
    [garden.compiler :refer [compile-css expand render-css]]
-   [garden.stylesheet :refer (at-container at-import at-media at-keyframes at-supports at-page)])
+   [garden.stylesheet :refer (at-container at-import at-media at-keyframes at-supports at-page)]
+   [garden.selectors :as s])
   #?(:clj
      (:import garden.types.CSSFunction
               garden.types.CSSUnit)))
@@ -156,7 +157,18 @@
            (compile-helper (at-media {:screen true}
                                      [:a {:f "bar"}
                                       (at-media {:print true}
-                                                [:& {:g "foo"}])]))))))
+                                                [:& {:g "foo"}])]))))
+
+    ;; https://github.com/noprompt/garden/issues/208
+    (is (= "a{color:blue}a:not(table a){color:green}"
+           (compile-helper [s/a
+                            {:color "blue"}
+                            [(s/& (s/not (s/descendant s/table s/a)))
+                             {:color "green"}]])))
+
+    ;; https://github.com/noprompt/garden/issues/187
+    (is (= ".space-x-2>*+*{margin-left:.5rem}"
+           (compile-helper [".space-x-2" [#garden.selectors.CSSSelector{:selector "& > * + *"} {:margin-left "0.5rem"}]])))))
 
 (deftest css-function-test
   (testing "CSSFunction"
