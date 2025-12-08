@@ -4,6 +4,10 @@
 
 ## Fixed
 
+- Parent selectors were not properly handled if the selector contained a space.
+  Fixes [#187](https://github.com/noprompt/garden/issues/187) and
+  (208)[https://github.com/noprompt/garden/issues/208]
+
 ## Changed
 
 # 1.8.601 (2025-11-14 / 95d22d0)
