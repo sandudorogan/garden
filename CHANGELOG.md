@@ -1,3 +1,11 @@
+# Unreleased
+
+## Added
+
+## Fixed
+
+## Changed
+
 # 1.9.606 (2025-12-08 / 2fb0029)
 
 ## Added
