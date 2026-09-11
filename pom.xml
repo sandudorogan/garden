@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.clojars.sandudorogan</groupId>
   <artifactId>garden</artifactId>
-  <version>1.11.612</version>
+  <version>1.12.632</version>
   <name>garden</name>
   <description>Release of noprompt/garden master to clojars</description>
   <url>https://github.com/sandudorogan/garden</url>
@@ -25,7 +25,7 @@
     <url>https://github.com/sandudorogan/garden</url>
     <connection>scm:git:git://github.com/sandudorogan/garden.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/sandudorogan/garden.git</developerConnection>
-    <tag>44c79cf0346ea57322e75b362bfc631f52057b58</tag>
+    <tag>2cd2e7305db5c1bcf3407829e4266639184797cc</tag>
   </scm>
   <dependencies>
     <dependency>
@@ -58,7 +58,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <git-revision>44c79cf0346ea57322e75b362bfc631f52057b58</git-revision>
+              <git-revision>2cd2e7305db5c1bcf3407829e4266639184797cc</git-revision>
             </manifestEntries>
           </archive>
         </configuration>
