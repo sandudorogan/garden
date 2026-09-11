@@ -4,7 +4,16 @@
 
 ## Fixed
 
+- Parent selectors were not properly handled if the selector contained a space.
+  Fixes [#187](https://github.com/noprompt/garden/issues/187) and
+  [208](https://github.com/noprompt/garden/issues/208)
+
 ## Changed
+
+- Replace YUI Compressor with resources-optimizer-maven-plugin
+- Upgrade deprecated integer parsing
+- Add kaocha for running tests
+- Fix dynamic resolution of `abs` in `garden.color`
 
 # 1.11.612 (2025-10-13 / c0906cc)
 

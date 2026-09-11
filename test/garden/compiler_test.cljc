@@ -4,6 +4,7 @@
        :clj [clojure.test :as t :refer [is are deftest testing]])
     [garden.color :as color]
     [garden.compiler :refer [compile-css expand render-css]]
+    [garden.selectors :as s]
     [garden.stylesheet :refer (at-import at-media at-keyframes at-supports at-page at-container at-starting-style)]
     #?(:clj [garden.types :as types]
        :cljs [garden.types :as types :refer [CSSFunction CSSUnit]]))
@@ -167,7 +168,18 @@
            (compile-helper (at-media {:screen true}
                                      [:a {:f "bar"}
                                       (at-media {:print true}
-                                                [:& {:g "foo"}])]))))))
+                                                [:& {:g "foo"}])]))))
+
+    ;; https://github.com/noprompt/garden/issues/208
+    (is (= "a{color:blue}a:not(table a){color:green}"
+           (compile-helper [s/a
+                            {:color "blue"}
+                            [(s/& (s/not (s/descendant s/table s/a)))
+                             {:color "green"}]])))
+
+    ;; https://github.com/noprompt/garden/issues/187
+    (is (= ".space-x-2>*+*{margin-left:.5rem}"
+           (compile-helper [".space-x-2" [#garden.selectors.CSSSelector{:selector "& > * + *"} {:margin-left "0.5rem"}]])))))
 
 
 (deftest css-function-test
@@ -282,6 +294,7 @@
            (compile-css {:pretty-print? false}
                         (at-media {:screen true}
                                   (at-starting-style [:a {:f "bar"}])))))))
+
 
 
 (deftest flag-tests

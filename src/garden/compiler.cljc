@@ -35,8 +35,7 @@
   {;; When set to `true` the compiled stylesheet will be "pretty
    ;; printed." This would be equivalent to setting
    ;; `{:ouput-style => :expanded}` in Sass. When set to `false`
-   ;; the compiled stylesheet will be compressed with the YUI
-   ;; compressor.
+   ;; the compiled stylesheet will be compressed with the CssCompressor.
    :pretty-print? true
    ;; A sequence of files to prepend to the output file.
    :preamble []
@@ -202,26 +201,36 @@
 ;; ---------------------------------------------------------------------
 ;; Rule expansion
 
-(def ^{:private true
-       :doc "Matches a single \"&\" or \"&\" follow by one or more
-  non-whitespace characters."}
+(def
+  ^{:private true
+    :doc "Matches a single \"&\" or \"&\" follow by one or more
+  characters."}
   parent-selector-re
-  #"^&(?:\S+)?$")
+  #"^&.+|^&$")
+
+(defn- parent-selector? [selector]
+  (boolean
+   (->> (last selector)
+        (util/to-str)
+        (re-find parent-selector-re))))
 
 
 (defn- extract-reference
   "Extract the selector portion of a parent selector reference."
   [selector]
   (when-let [reference (->> (last selector)
-                            (util/to-str)
-                            (re-find parent-selector-re))]
-    (apply str (rest reference))))
+                            util/to-str
+                            string/trim
+                            rest
+                            seq)]
+    (apply str reference)))
 
 
 (defn- expand-selector-reference
   [selector]
-  (if-let [reference (extract-reference selector)]
-    (let [parent (butlast selector)]
+  (if (parent-selector? selector)
+    (let [reference (extract-reference selector)
+          parent (butlast selector)]
       (concat (butlast parent)
               (-> (last parent)
                   (util/as-str reference)
@@ -357,6 +366,7 @@
   (let [{:keys [rules]} value
         xs (doall (mapcat expand (expand rules)))]
     (list (CSSAtRule. :starting-style {:rules xs}))))
+
 
 
 ;; ---------------------------------------------------------------------
@@ -826,6 +836,7 @@
                (rule-join)
                (indent-str))
            r-brace-1))))
+
 
 
 ;; ---------------------------------------------------------------------
