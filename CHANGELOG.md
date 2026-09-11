@@ -2,26 +2,26 @@
 
 ## Added
 
+- Kaocha for running tests
+
 ## Fixed
 
-- Parent selectors were not properly handled if the selector contained a space.
-  Fixes [#187](https://github.com/noprompt/garden/issues/187) and
-  [208](https://github.com/noprompt/garden/issues/208)
+- Parent selectors that contain a space
+  ([#187](https://github.com/noprompt/garden/issues/187),
+  [#208](https://github.com/noprompt/garden/issues/208))
+- Use `Integer/parseInt` instead of the deprecated `Integer` constructor
+- Resolve `clojure.core/abs` dynamically in `garden.color`
 
 ## Changed
 
-- Replace YUI Compressor with resources-optimizer-maven-plugin
-- Upgrade deprecated integer parsing
-- Add kaocha for running tests
-- Fix dynamic resolution of `abs` in `garden.color`
+- Compress CSS with resources-optimizer instead of YUI Compressor
 
 # 1.11.612 (2025-10-13 / c0906cc)
 
 ## Added
 
-## Fixed
-
-## Changed
+- `@container` rule (`at-container`)
+- `@starting-style` rule (`at-starting-style`)
 
 # 1.7.590 (2025-02-18 / d8cb3b0)
 
