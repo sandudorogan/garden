@@ -162,6 +162,12 @@
   (and (at-rule? x) (= (:identifier x) :starting-style)))
 
 
+(defn at-counter-style?
+  "True if `x` is a CSS `@counter-style` rule."
+  [x]
+  (and (at-rule? x) (= (:identifier x) :counter-style)))
+
+
 
 (defn prefix
   "Attach a CSS style prefix to s."

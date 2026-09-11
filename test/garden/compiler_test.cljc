@@ -5,7 +5,7 @@
     [garden.color :as color]
     [garden.compiler :refer [compile-css expand render-css]]
     [garden.selectors :as s]
-    [garden.stylesheet :refer (at-import at-media at-keyframes at-supports at-page at-container at-starting-style)]
+    [garden.stylesheet :refer (at-import at-media at-keyframes at-supports at-page at-container at-starting-style at-counter-style)]
     #?(:clj [garden.types :as types]
        :cljs [garden.types :as types :refer [CSSFunction CSSUnit]]))
   #?(:clj
@@ -294,6 +294,35 @@
            (compile-css {:pretty-print? false}
                         (at-media {:screen true}
                                   (at-starting-style [:a {:f "bar"}])))))))
+
+
+(deftest at-counter-style-test
+  (let [flags {:pretty-print? false}]
+    (are [x y] (= (compile-css flags x) y)
+      (at-counter-style :thumbs
+                        {:system :cyclic
+                         :symbols "👍"
+                         :suffix "\" \""})
+      "@counter-style thumbs{system:cyclic;symbols:👍;suffix:\" \"}"
+
+      (at-counter-style :circled-alpha
+                        {:system :fixed
+                         :symbols [["Ⓐ" "Ⓑ" "Ⓒ"]]
+                         :suffix "\" \""})
+      "@counter-style circled-alpha{system:fixed;symbols:Ⓐ Ⓑ Ⓒ;suffix:\" \"}"
+
+      (at-counter-style :additive
+                        {:system :additive
+                         :additive-symbols [[5000 "ↂ"] [1000 "ↀ"]]})
+      "@counter-style additive{system:additive;additive-symbols:5000 ↂ,1000 ↀ}"
+
+      (list (at-counter-style :thumbs {:system :cyclic :symbols "👍"})
+            [:h2 {:c :d}])
+      "@counter-style thumbs{system:cyclic;symbols:👍}h2{c:d}"
+
+      (list [:.foo {:color "red"}
+             (at-counter-style :thumbs {:system :cyclic :symbols "👍"})])
+      ".foo{color:red}@counter-style thumbs{system:cyclic;symbols:👍}")))
 
 
 

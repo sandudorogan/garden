@@ -118,6 +118,22 @@
   (at-rule :starting-style {:rules rules}))
 
 
+(defn at-counter-style
+  "Create a CSS @counter-style rule.
+
+  Examples:
+    (at-counter-style :thumbs
+      {:system :cyclic
+       :symbols \"👍\"
+       :suffix \".\"})
+    (at-counter-style :circled-alpha
+      {:system :fixed
+       :symbols [[\"Ⓐ\" \"Ⓑ\" \"Ⓒ\"]]})"
+  [style-name & descriptors]
+  (at-rule :counter-style {:style-name style-name
+                           :descriptors descriptors}))
+
+
 
 ;; ## Functions
 

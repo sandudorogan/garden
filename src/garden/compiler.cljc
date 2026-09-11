@@ -121,7 +121,8 @@
       (util/at-keyframes? x)
       (util/at-page? x)
       (util/at-container? x)
-      (util/at-starting-style? x)))
+      (util/at-starting-style? x)
+      (util/at-counter-style? x)))
 
 
 (defn- divide-vec
@@ -366,6 +367,16 @@
   (let [{:keys [rules]} value
         xs (doall (mapcat expand (expand rules)))]
     (list (CSSAtRule. :starting-style {:rules xs}))))
+
+
+;; @counter-style expansion
+
+(defmethod expand-at-rule :counter-style
+  [{:keys [value]}]
+  (let [{:keys [style-name descriptors]} value]
+    (list (CSSAtRule. :counter-style
+                      {:style-name (util/to-str style-name)
+                       :descriptors (mapcat expand (expand descriptors))}))))
 
 
 
@@ -836,6 +847,20 @@
                (rule-join)
                (indent-str))
            r-brace-1))))
+
+
+;; @counter-style
+
+(defmethod render-at-rule :counter-style
+  [{:keys [value]}]
+  (let [{:keys [style-name descriptors]} value]
+    (str "@counter-style "
+         style-name
+         l-brace
+         (->> (map render-css descriptors)
+              (string/join "\n")
+              (indent-str))
+         r-brace)))
 
 
 

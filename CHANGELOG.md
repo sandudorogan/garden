@@ -2,6 +2,8 @@
 
 ## Added
 
+- `@counter-style` rule (`at-counter-style`)
+
 ## Fixed
 
 ## Changed
