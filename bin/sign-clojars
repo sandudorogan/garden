@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+version="${1:-$(python3 - <<'PY'
+import re
+from pathlib import Path
+text = Path("pom.xml").read_text()
+m = re.search(r"<artifactId>garden</artifactId>\s*<version>([^<]+)</version>", text)
+if not m:
+    raise SystemExit("could not read version from pom.xml")
+print(m.group(1))
+PY
+)}"
+
+cd "$HOME/.m2/repository/org/clojars/sandudorogan/garden/$version"
+
+auth="$(python3 - <<'PY'
+import xml.etree.ElementTree as ET
+from pathlib import Path
+
+root = ET.parse(Path.home() / ".m2" / "settings.xml")
+for server in root.iter("server"):
+    if server.findtext("id") == "clojars":
+        print(f"{server.findtext('username')}:{server.findtext('password')}")
+        break
+else:
+    raise SystemExit("no clojars server in ~/.m2/settings.xml")
+PY
+)"
+
+gpg -ab "garden-$version.jar"
+gpg -ab "garden-$version.pom"
+
+base="https://clojars.org/repo/org/clojars/sandudorogan/garden/$version"
+curl -f -u "$auth" -T "garden-$version.jar.asc" "$base/garden-$version.jar.asc"
+curl -f -u "$auth" -T "garden-$version.pom.asc" "$base/garden-$version.pom.asc"
+
+echo "uploaded signatures for $version"
