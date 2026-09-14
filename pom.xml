@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.clojars.sandudorogan</groupId>
   <artifactId>garden</artifactId>
-  <version>1.13.635</version>
+  <version>1.14.639</version>
   <name>garden</name>
   <description>Release of noprompt/garden master to clojars</description>
   <url>https://github.com/sandudorogan/garden</url>
@@ -25,13 +25,13 @@
     <url>https://github.com/sandudorogan/garden</url>
     <connection>scm:git:git://github.com/sandudorogan/garden.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/sandudorogan/garden.git</developerConnection>
-    <tag>3978e832fac821483f7e4cb1570db7eb18e17d9d</tag>
+    <tag>d4dbc12f1051b52b2a51aa5dfb11156ed0ada524</tag>
   </scm>
   <dependencies>
     <dependency>
       <groupId>org.primefaces.extensions</groupId>
       <artifactId>resources-optimizer-maven-plugin</artifactId>
-      <version>2.7.5</version>
+      <version>2.6.5</version>
     </dependency>
   </dependencies>
   <build>
@@ -58,7 +58,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <git-revision>3978e832fac821483f7e4cb1570db7eb18e17d9d</git-revision>
+              <git-revision>d4dbc12f1051b52b2a51aa5dfb11156ed0ada524</git-revision>
             </manifestEntries>
           </archive>
         </configuration>
